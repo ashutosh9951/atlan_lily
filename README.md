@@ -17,7 +17,8 @@ Here's a summary of the problem statements we aimed to solve:
 
 
 ## HLD Diagrams
-WIP
+
+![component_diagram](https://github.com/user-attachments/assets/37b6ed62-9950-4bb1-ac23-571bd2857a7c)
 
 ## Choosing the Right Technologies: Multi-Database Approach
 
