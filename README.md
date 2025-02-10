@@ -67,28 +67,36 @@ To run this project:
 1. **Prerequisites:**
     * Java 17+
     * Maven
-    * Running Kafka broker
-    * Elastic search
-    * CockRoachDB
-    * Neo4J
+    * docker
 
+      ```bash
+      cd docker
+      
+   
 2.  **Clone the repository:**
     ```bash
     git clone [repository-url]
     cd atlan-lily
     ```
 
-3.  **Build the project:**
+
+3.  **Run docker containers:**
+    ```bash
+    cd docker
+    docker-compose up -d
+    ```
+
+4.  **Build the project:**
     ```bash
     mvn clean install
     ```
 
-4.  **Run the application:**
+5.  **Run the application:**
     ```bash
     mvn spring-boot:run
     ```
 
-5.  **Test the API (Example using `curl` for Bulk Ingestion):**
+6.  **Test the API (Example using `curl` for Bulk Ingestion):**
     ```bash
     curl -X POST \
       http://localhost:8080/api/ingestion/bulk \
