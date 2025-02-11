@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class KafkaIngestionService implements IngestionService {
+public class KafkaEventBasedIngestionService implements EventBasedIngestionService {
 
     private static final String METADATA_TOPIC = "metadata-ingestion-topic";
     private static final String ISSUE_TOPIC = "data-issue-topic";
@@ -18,7 +18,7 @@ public class KafkaIngestionService implements IngestionService {
     private final ObjectMapper objectMapper;
 
     @Autowired
-    public KafkaIngestionService(KafkaTemplate<String, String> kafkaTemplate, ObjectMapper objectMapper) {
+    public KafkaEventBasedIngestionService(KafkaTemplate<String, String> kafkaTemplate, ObjectMapper objectMapper) {
         this.kafkaTemplate = kafkaTemplate;
         this.objectMapper = objectMapper;
     }

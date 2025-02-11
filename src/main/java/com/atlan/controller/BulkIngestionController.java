@@ -1,7 +1,7 @@
 package com.atlan.controller;
 
 import com.atlan.model.MetadataAsset;
-import com.atlan.service.IngestionService;
+import com.atlan.service.EventBasedIngestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,17 +16,17 @@ import java.util.List;
 @RequestMapping("/api/ingestion/bulk")
 public class BulkIngestionController {
 
-    private final IngestionService ingestionService;
+    private final EventBasedIngestionService eventBasedIngestionService;
 
     @Autowired
-    public BulkIngestionController(IngestionService ingestionService) {
-        this.ingestionService = ingestionService;
+    public BulkIngestionController(EventBasedIngestionService eventBasedIngestionService) {
+        this.eventBasedIngestionService = eventBasedIngestionService;
     }
 
     @PostMapping
     public ResponseEntity<String> ingestBulkMetadata(@RequestBody List<MetadataAsset> metadataAssets) {
         try {
-            ingestionService.enqueueBulkMetadata(metadataAssets);
+            eventBasedIngestionService.enqueueBulkMetadata(metadataAssets);
             return ResponseEntity.ok("Bulk metadata ingestion request submitted.");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error submitting bulk ingestion request: " + e.getMessage());
