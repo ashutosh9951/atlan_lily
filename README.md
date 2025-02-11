@@ -18,7 +18,8 @@ Here's a summary of the problem statements we aimed to solve:
 
 ## HLD Diagrams
 
-![component_diagram_01](https://github.com/user-attachments/assets/1f4234e7-4089-45d3-9e5f-fdba4713d5b8)
+![c_d_02](https://github.com/user-attachments/assets/4e57bf50-743e-4bef-a0b7-9f0d46791e5c)
+
 
 ## Choosing the Right Technologies: Multi-Database Approach
 
@@ -35,7 +36,7 @@ For my metadata platform, I decided to use a combination of databases to leverag
 | **High Availability**         | Requires Complex Configurations  | Built-in High Availability        | Built-in High Availability        | Requires Replica Sets for HA       | Built-in High Availability         |
 | **Use Case Suitability for Metadata** | Great for smaller datasets, scaling challenges | Less suitable for relational metadata, excellent for performance in writes | Less suitable for relational metadata, excellent perf | Suitable for flexible metadata, consistency trade-offs | **Excellent for scalable, consistent, relational metadata** |
 
-The selection of CockroachDB is primarily justified by its strengths of relational databases with the scalability and resilience demands of a modern metadata platform.  Its transactional guarantees and SQL interface simplify development and ensure data integrity, while its distributed nature provides the necessary scalability and high availability to accommodate growing metadata volumes and ensure continuous operation. 
+The selection of CockroachDB is primarily justified by its strengths of relational databases with the scalability and resilience demands of a modern metadata platform.  Its transactional guarantees and SQL interface simplify development and ensure data integrity, while its distributed nature provides the necessary scalability and high availability to accommodate growing metadata volumes. 
 
 However we will need to dig deep into the query patterns and benchmarks for our system to make the right choice, for example we might prefer cassandra for its excellent write performances if we dont need complex query patterns. Similarily dynamo is very performant,scalable but it restricts us to AWS.
 
@@ -45,7 +46,9 @@ However we will need to dig deep into the query patterns and benchmarks for our 
 
 *   **Spring Boot (for Application Framework):** Spring Boot provides a robust and efficient framework for building the application backend service.  Its dependency injection, auto-configuration, and ecosystem integrations simplify development and deployment.
 
-*   **Kafka (for Event Streaming - Asynchronous Operations):**  To keep Elasticsearch and Neo4j in sync with CockroachDB (my source of truth), I'm using an event-driven approach with Kafka.  When metadata changes in CockroachDB, events will be published to Kafka, which then trigger updates in Elasticsearch and Neo4j asynchronously. This ensures consistency without blocking core metadata operations.
+*   **Kafka (for Event Streaming - Asynchronous Operations):**
+*   For reltime event ingesion mode
+*    To keep Elasticsearch and Neo4j in sync with CockroachDB (my source of truth), I'm using an event-driven approach with Kafka.  When metadata changes in CockroachDB, events will be published to Kafka, which then trigger updates in Elasticsearch and Neo4j asynchronously. This ensures consistency without blocking core metadata operations.
 
 ## Primary Use cases   
 
@@ -62,9 +65,9 @@ Steps in bulk ingestion mode will be :
 
 * Publish Events to Kafka in Batches: Send these batches of events to your Kafka topic, rather than sending one event at a time.
 
-* Optimize Elasticsearch Consumer:  Make sure your Elasticsearch consumer (MetadataSyncService) uses Elasticsearch's bulk indexing for efficiency.
+* Optimize Elasticsearch Consumer:  Elasticsearch consumer (MetadataSyncService) uses Elasticsearch's bulk indexing for efficiency.
 
-* Optimize Neo4j Consumer: Ensure your Neo4j consumer (LineageService) uses batch transactions to update Neo4j in bulk.
+* Optimize Neo4j Consumer: Neo4j consumer (LineageService) uses batch transactions to update Neo4j in bulk.
 
 
 ### Real-time Ingestion mode:
@@ -105,9 +108,13 @@ Steps in bulk ingestion mode will be :
 There are two models through which multitenancy can be supported :
 * Complete private deployement for each tenant - This has the advantage of complete isolation and security, but here the challege would be to maintain all different deployements, and making iterative changes to the platform.This might be preferred by large enterprises.
 * Multitenant Saas platform for all the tenant -  To isolate the resources for the tenants we will need to think of all different system components:
+
   kafka - separate topics for the tenants
-  cockroachDB -  separate databases for the tenants
-  elastic - separete indexes for the tenants
+  
+  CockroachDB -  separate databases for the tenants
+  
+  Elastic - separete indexes for the tenants
+  
   We can then use the tenantId is the jwt token to set the right context for each API requests ,The application service layer controls the logic , so that it only accesses the relavent resources  
 
 
