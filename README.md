@@ -47,7 +47,24 @@ However we will need to dig deep into the query patterns and benchmarks for our 
 
 *   **Kafka (for Event Streaming - Asynchronous Operations):**  To keep Elasticsearch and Neo4j in sync with CockroachDB (my source of truth), I'm using an event-driven approach with Kafka.  When metadata changes in CockroachDB, events will be published to Kafka, which then trigger updates in Elasticsearch and Neo4j asynchronously. This ensures consistency without blocking core metadata operations.
 
-*   **The near-real-time nature of the solution:**
+## Primary Use cases   
+
+**Bulk Metdata ingestion (Historical data ingestion mode)
+
+* The database connectors will write to an intermediate location like s3/ azure blob storage instead of kafka after transformation
+
+* Directly Load into CockroachDB:  Bulk import your historical data straight into CockroachDB. Use CockroachDB's IMPORT feature or efficient bulk loading tools.
+
+* Generate Events in Batches: For each batch of data from CockroachDB, create corresponding MetadataAssetSavedEvent objects in batches.
+
+* Publish Events to Kafka in Batches: Send these batches of events to your Kafka topic, rather than sending one event at a time.
+
+* Optimize Elasticsearch Consumer:  Make sure your Elasticsearch consumer (MetadataSyncService) uses Elasticsearch's bulk indexing for efficiency.
+
+* Optimize Neo4j Consumer: Ensure your Neo4j consumer (LineageService) uses batch transactions to update Neo4j in bulk.
+
+
+**Real-time Ingestion mode:**
     *   **Solution:** Event-driven architecture with Kafka as a message queue. Asynchronous processing in Event Processor Service.
     *   **Rationale:** Kafka enables near real-time data streaming and decoupled processing. Webhooks for external event sources (Monte Carlo) provide immediate event delivery. Asynchronous processing ensures low latency for ingestion and downstream reactions.
 
