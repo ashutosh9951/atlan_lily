@@ -60,6 +60,17 @@ For my metadata platform, I decided to use a combination of databases to leverag
 *   **Observability of the platform:**  logging, metrics (using Micrometer/Prometheus), tracing (using Spring Cloud Sleuth/Zipkin), health checks, and dashboards (Grafana).
 
 
+## Multi Tenancy
+
+There are two models through which multitenancy can be supported :
+* Complete private deployementfor each tenant - This has the advantage of complete isolation and security, but here the challege would be to maintain all different deployements, and making iterative changes to the platform.This might be preferred by large enterprises.
+* Multitenant Saas platform for all the tenant -  To isolate the resources for the tenants we will need to think of all different system components:
+  kafka - separate topics for the tenants
+  cockroachDB -  separate databases for the tenants
+  elastic - separete indexes for the tenants
+  We can then use the tenantId is the jwt toke to set the right context for each API requests ,The application service layer controls the logic , so that it only accesses the relavent resources  
+
+
 
 ## Getting Started
 
