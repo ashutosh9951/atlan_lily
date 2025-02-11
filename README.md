@@ -26,6 +26,18 @@ For my metadata platform, I decided to use a combination of databases to leverag
 
 *   **CockroachDB (for Core Metadata Storage):** I selected CockroachDB as the primary store for metadata entities.  Its SQL compatibility (PostgreSQL-like), strong consistency, and scalability are crucial for reliably managing metadata relationships and ensuring data integrity.  I want to use familiar SQL concepts and have a robust database that can grow.
 
+| Feature                     | **PostgreSQL**                  | **Cassandra**                     | **DynamoDB**                      | **MongoDB**                       | **CockroachDB**                     |
+|------------------------------|---------------------------------|-----------------------------------|-----------------------------------|-----------------------------------|-------------------------------------|
+| **Horizontal Scalability**    | Vertical Scalability Focus     | Excellent Horizontal Scalability | Excellent Horizontal Scalability | Good Horizontal Scalability (Sharding)| Excellent Horizontal Scalability |
+| **Data Consistency (ACID)**   | Strong Consistency               | Eventual Consistency             | Eventual Consistency             | Eventual Consistency             | Strong Consistency                   |
+| **Relational Data Modeling** | Robust Relational Model         | Limited Relational Capabilities  | Limited Relational Capabilities  | Document-oriented (Relationships Limited) | Robust Relational Model         |
+| **Query Language**           | Standard SQL                    | NoSQL (CQL-like)                  | NoSQL (Proprietary API)         | NoSQL (Document Query Language)  | Standard SQL                        |
+| **High Availability**         | Requires Complex Configurations  | Built-in High Availability        | Built-in High Availability        | Requires Replica Sets for HA       | Built-in High Availability         |
+| **Operational Complexity**    | Moderate                         | High                               | Low to Moderate                  | Moderate                         | Moderate                            |
+| **Use Case Suitability for Metadata** | Strong for smaller datasets, scaling challenges | Less suitable for highly relational metadata, excellent for performance in writes | Less suitable for highly relational metadata | Suitable for flexible metadata, consistency trade-offs | **Excellent for scalable, consistent, relational metadata** |
+
+The selection of CockroachDB is primarily justified by its strengths of relational databases with the scalability and resilience demands of a modern metadata platform.  Its transactional guarantees and SQL interface simplify development and ensure data integrity, while its distributed nature provides the necessary scalability and high availability to accommodate growing metadata volumes and ensure continuous operation. 
+
 *   **Elasticsearch (for Search & Discovery):**  To enable users to easily search and discover metadata assets, I'm integrating Elasticsearch. Elasticsearch's full-text search capabilities and speed are ideal for indexing metadata attributes and providing fast, flexible search functionalities.
 
 *   **Neo4j (for Lineage Tracking & Relationships):** Lineage is a key aspect of metadata. Neo4j, as a graph database, is perfect for modeling and querying relationships between metadata assets (e.g., data flow, dependencies).  I plan to use Neo4j to visualize and trace the lineage of data assets.
