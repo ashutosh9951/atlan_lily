@@ -42,7 +42,7 @@ The selection of CockroachDB is primarily justified by its strengths of relation
 
 *   **Neo4j (for Lineage Tracking & Relationships):** Lineage is a key aspect of metadata. Neo4j, as a graph database, is perfect for modeling and querying relationships between metadata assets (e.g., data flow, dependencies).  I plan to use Neo4j to visualize and trace the lineage of data assets.
 
-*   **Spring Boot (for Application Framework):** Spring Boot provides a robust and efficient framework for building the application.  Its dependency injection, auto-configuration, and ecosystem integrations simplify development and deployment.
+*   **Spring Boot (for Application Framework):** Spring Boot provides a robust and efficient framework for building the application backend service.  Its dependency injection, auto-configuration, and ecosystem integrations simplify development and deployment.
 
 *   **Kafka (for Event Streaming - Asynchronous Operations):**  To keep Elasticsearch and Neo4j in sync with CockroachDB (my source of truth), I'm using an event-driven approach with Kafka.  When metadata changes in CockroachDB, events will be published to Kafka, which then trigger updates in Elasticsearch and Neo4j asynchronously. This ensures consistency without blocking core metadata operations.
 
@@ -52,7 +52,7 @@ The selection of CockroachDB is primarily justified by its strengths of relation
 
 *   **Authentication and Authorization as first-class citizens in the system:**
     *   **Solution:**  Spring Security for securing APIs and services. OAuth 2.0 or API Keys for API authentication.  RBAC for authorization. Service-to-service authentication using Spring Security or service mesh.
-    *   **Rationale:**  Spring Security is a robust framework for implementing authentication and authorization in Spring Boot applications.
+
 
 *   **Capability for preprocessing and postprocessing wherever needed on the Platform:**
     *   **Solution:**
