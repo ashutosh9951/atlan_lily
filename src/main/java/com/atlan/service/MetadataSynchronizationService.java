@@ -4,7 +4,7 @@ import com.atlan.event.MetadataAssetSavedEvent;
 import com.atlan.model.MetadataAssetEntity;
 import com.atlan.search.MetadataAssetSearchDocument;
 import com.atlan.search.MetadataAssetSearchRepository;
-import com.atlan.store.MetadataAssetRepository;
+import com.atlan.repository.MetadataAssetRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +36,7 @@ public class MetadataSynchronizationService {
     public void indexMetadataAssetForSearch(MetadataAssetEntity entity) {
         try {
             MetadataAssetSearchDocument searchDocument = convertToSearchDocument(entity);
-            searchRepository.save(searchDocument); // Index to Elasticsearch
+            searchRepository.save(searchDocument);
             logger.info("Metadata Asset indexed to Elasticsearch: {}", entity.getQualifiedName());
         } catch (Exception e) {
             logger.error("Error indexing metadata asset to Elasticsearch: {}", entity.getQualifiedName(), e);
@@ -55,7 +55,7 @@ public class MetadataSynchronizationService {
     }
     public List<MetadataAssetSearchDocument> searchAssetsByText(String searchText) {
 
-        return searchRepository.findByDisplayNameContainingIgnoreCase(searchText); // Simple example
+        return searchRepository.findByDisplayNameContainingIgnoreCase(searchText);
 
     }
 }

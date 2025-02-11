@@ -1,4 +1,4 @@
-package com.atlan.store;
+package com.atlan.repository;
 
 import com.atlan.model.MetadataAssetEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

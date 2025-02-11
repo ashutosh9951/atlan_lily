@@ -34,7 +34,7 @@ public abstract class MetadataAssetEntity {
     private LocalDateTime updateTime = LocalDateTime.now();
 
     @Convert(converter = HashMapConverter.class)
-    @Column(columnDefinition = "TEXT") // Or consider "jsonb" if CockroachDB supports it well and Hibernate mapping is efficient
+    @Column(columnDefinition = "TEXT")
     private Map<String, String> attributes = new java.util.HashMap<>();
 
     public MetadataAssetEntity(String type, String qualifiedName, String displayName) {

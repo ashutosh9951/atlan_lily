@@ -1,4 +1,4 @@
-package com.atlan.service;//package com.atlan.service;
+package com.atlan.service;
 //
 //import com.atlan.event.MetadataAssetSavedEvent;
 //import com.atlan.model.MetadataAssetEntity;
@@ -14,6 +14,8 @@ package com.atlan.service;//package com.atlan.service;
 //import org.springframework.stereotype.Service;
 //
 ////@Service
+
+//TODO: Fix this
 //public class LineageService {
 //
 //    private static final Logger logger = LoggerFactory.getLogger(LineageService.class);

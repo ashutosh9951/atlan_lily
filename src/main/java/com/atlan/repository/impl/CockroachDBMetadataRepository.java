@@ -1,23 +1,23 @@
-package com.atlan.store.impl;
+package com.atlan.repository.impl;
 
 import com.atlan.event.MetadataAssetSavedEvent;
 import com.atlan.model.*;
-import com.atlan.store.MetadataAssetRepository;
-import com.atlan.store.DataIssueEventRepository;
-import com.atlan.store.MetadataStore;
+import com.atlan.repository.MetadataAssetRepository;
+import com.atlan.repository.DataIssueEventRepository;
+import com.atlan.repository.MetadataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class CockroachDBMetadataStore implements MetadataStore {
+public class CockroachDBMetadataRepository implements MetadataRepository {
 
     private final MetadataAssetRepository metadataAssetRepository;
     private final DataIssueEventRepository dataIssueEventRepository;
     private final ApplicationEventPublisher eventPublisher;
 
     @Autowired
-    public CockroachDBMetadataStore(MetadataAssetRepository metadataAssetRepository, DataIssueEventRepository dataIssueEventRepository, ApplicationEventPublisher eventPublisher) {
+    public CockroachDBMetadataRepository(MetadataAssetRepository metadataAssetRepository, DataIssueEventRepository dataIssueEventRepository, ApplicationEventPublisher eventPublisher) {
         this.metadataAssetRepository = metadataAssetRepository;
         this.dataIssueEventRepository = dataIssueEventRepository;
         this.eventPublisher = eventPublisher;

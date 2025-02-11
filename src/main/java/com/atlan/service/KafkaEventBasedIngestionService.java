@@ -27,7 +27,7 @@ public class KafkaEventBasedIngestionService implements EventBasedIngestionServi
     public void enqueueBulkMetadata(List<MetadataAsset> metadataAssets) {
         try {
             for (MetadataAsset asset : metadataAssets) {
-                String message = objectMapper.writeValueAsString(asset); // Serialize to JSON
+                String message = objectMapper.writeValueAsString(asset);
                 kafkaTemplate.send(METADATA_TOPIC, message);
             }
         } catch (Exception e) {
