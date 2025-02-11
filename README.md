@@ -129,8 +129,6 @@ To run this project:
     * Maven
     * docker
 
-      ```bash
-      cd docker
       
    
 2.  **Clone the repository:**
@@ -156,11 +154,12 @@ To run this project:
     mvn spring-boot:run
     ```
 
-6.  **Test the API (Example using `curl` for Bulk Ingestion):**
+6.  **Test the API (Example using `curl` for Ingestion) , do set the tenantId in request header:**
     ```bash
     curl -X POST \
       http://localhost:8080/api/ingestion/bulk \
       -H 'Content-Type: application/json' \
+      -H 'tenant-id: <tenant id>' \
       -d '[
             {
               "type": "Database",
