@@ -49,7 +49,7 @@ However we will need to dig deep into the query patterns and benchmarks for our 
 
 ## Primary Use cases   
 
-**Bulk Metdata ingestion (Historical data ingestion mode)
+### Bulk Metdata ingestion (Historical data ingestion mode)
 
 * The database connectors will write to an intermediate location like s3/ azure blob storage instead of kafka after transformation
 
@@ -64,26 +64,33 @@ However we will need to dig deep into the query patterns and benchmarks for our 
 * Optimize Neo4j Consumer: Ensure your Neo4j consumer (LineageService) uses batch transactions to update Neo4j in bulk.
 
 
-**Real-time Ingestion mode:**
-    *   **Solution:** Event-driven architecture with Kafka as a message queue. Asynchronous processing in Event Processor Service.
-    *   **Rationale:** Kafka enables near real-time data streaming and decoupled processing. Webhooks for external event sources (Monte Carlo) provide immediate event delivery. Asynchronous processing ensures low latency for ingestion and downstream reactions.
+### Real-time Ingestion mode:
 
-*   **Authentication and Authorization as first-class citizens in the system:**
+
+   **Solution:** Event-driven architecture with Kafka as a message queue. Asynchronous processing in Event Processor Service.
+   
+   **Rationale:** Kafka enables near real-time data streaming and decoupled processing. Webhooks for external event sources (Monte Carlo) provide immediate event delivery. Asynchronous processing ensures low latency for ingestion and downstream reactions.
+
+###   **Authentication and Authorization as first-class citizens in the system:**
     *   **Solution:**  Spring Security for securing APIs and services. OAuth 2.0 or API Keys for API authentication.  RBAC for authorization. Service-to-service authentication using Spring Security or service mesh.
 
 
-*   **Capability for preprocessing and postprocessing wherever needed on the Platform:**
+###   **Capability for preprocessing and postprocessing wherever needed on the Platform:
+
+
     *   **Solution:**
         *   **Preprocessing:**  Input validation and transformation in Ingestion APIs before messages are enqueued to Kafka.
         *   **Postprocessing:** Event Processor for initial handling. Enrichment Service for metadata enhancement. Governance Service for policy enforcement.
     *   **Rationale:** Allows for data cleansing, transformation, enrichment, and policy application at different stages of the ingestion and processing pipeline.
 
 
-*   **Adaptability to inbound and outbound consumers to scale as per the volume of metadata change events hitting the platform:**
-    *   **Solution:** Kafka for handling high-volume event streams. Microservices architecture for horizontal scalability of Ingestion, Event Processor, Enrichment, and Governance Services. API Gateways for inbound API management. Outbound eventing for downstream consumers.
-    *   **Rationale:** Kafka's scalability and partitioning. Microservices' stateless nature allows for scaling based on load. Decoupled components and event-driven communication contribute to overall platform adaptability.
+###   **Adaptability to inbound and outbound consumers to scale as per the volume of metadata change events hitting the platform:
 
-## Secondary Use Cases (Good to Have)
+
+    **Solution:** Kafka for handling high-volume event streams. Microservices architecture for horizontal scalability of Ingestion, Event Processor, Enrichment, and Governance Services. API Gateways for inbound API management. Outbound eventing for downstream consumers.
+    **Rationale:** Kafka's scalability and partitioning. Microservices' stateless nature allows for scaling based on load. Decoupled components and event-driven communication contribute to overall platform adaptability.
+
+## Secondary Use Cases
 
 *   **Integration with SaaS sources and targets:**  The architecture can be extended by adding dedicated Ingestion APIs or Adapters for SaaS sources and outbound connectors in Governance/Enrichment services to interact with SaaS targets via their APIs.
 
@@ -93,7 +100,7 @@ However we will need to dig deep into the query patterns and benchmarks for our 
 ## Multi Tenancy
 
 There are two models through which multitenancy can be supported :
-* Complete private deployementfor each tenant - This has the advantage of complete isolation and security, but here the challege would be to maintain all different deployements, and making iterative changes to the platform.This might be preferred by large enterprises.
+* Complete private deployement for each tenant - This has the advantage of complete isolation and security, but here the challege would be to maintain all different deployements, and making iterative changes to the platform.This might be preferred by large enterprises.
 * Multitenant Saas platform for all the tenant -  To isolate the resources for the tenants we will need to think of all different system components:
   kafka - separate topics for the tenants
   cockroachDB -  separate databases for the tenants
