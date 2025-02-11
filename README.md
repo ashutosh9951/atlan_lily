@@ -2,7 +2,7 @@
 
 This document outlines my journey in building the Atlan platform for ingesting metadata.  I'm aiming to create a scalable system that can manage metadata for various data assets, offering capabilities for catalogue, search, and lineage tracking. Here's how I'm approaching it, step-by-step:
 
-## Use Case Breakdown
+## Use Cases
 Here's a summary of the problem statements we aimed to solve:
 
 1.  **Primary Use Case - (Inbound, Internal) - Bulk Metadata Ingestion:** Ingesting a large volume (1B assets) of existing metadata, primarily table columns and BI fields, with eventual consistency into the Atlan platform.
@@ -50,7 +50,10 @@ However we will need to dig deep into the query patterns and benchmarks for our 
 ## Primary Use cases   
 
 ### Bulk Metdata ingestion (Historical data ingestion mode)
+We might need to implement a hybrid approach for this dependending on what kind of connector it is,and volume of the data.
+For example for data warehouses we can go for bulk import with files for initial bulk ingestion.
 
+Steps in bulk ingestion mode will be : 
 * The database connectors will write to an intermediate location like s3/ azure blob storage instead of kafka after transformation
 
 * Directly Load into CockroachDB:  Bulk import your historical data straight into CockroachDB. Use CockroachDB's IMPORT feature or efficient bulk loading tools.
@@ -105,7 +108,7 @@ There are two models through which multitenancy can be supported :
   kafka - separate topics for the tenants
   cockroachDB -  separate databases for the tenants
   elastic - separete indexes for the tenants
-  We can then use the tenantId is the jwt toke to set the right context for each API requests ,The application service layer controls the logic , so that it only accesses the relavent resources  
+  We can then use the tenantId is the jwt token to set the right context for each API requests ,The application service layer controls the logic , so that it only accesses the relavent resources  
 
 
 
