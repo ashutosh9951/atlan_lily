@@ -24,7 +24,7 @@ Here's a summary of the problem statements we aimed to solve:
 
 For my metadata platform, I decided to use a combination of databases to leverage their strengths for different use cases:
 
-*   **CockroachDB (for Core Metadata Storage):** I selected CockroachDB as the primary store for metadata entities.  Its SQL compatibility (PostgreSQL-like), strong consistency, and scalability are crucial for reliably managing metadata relationships and ensuring data integrity.  I want to use familiar SQL concepts and have a robust database that can grow.
+*   **CockroachDB (for Core Metadata Storage):** I selected CockroachDB as the primary store for metadata entities.  Its SQL compatibility (PostgreSQL-like), consistency, and scalability are crucial for reliably managing metadata relationships and ensuring data integrity.  I want to use familiar SQL concepts and have a robust database that can grow.
 
 | Feature                     | **PostgreSQL**                  | **Cassandra**                     | **DynamoDB**                      | **MongoDB**                       | **CockroachDB**                     |
 |------------------------------|---------------------------------|-----------------------------------|-----------------------------------|-----------------------------------|-------------------------------------|
@@ -33,10 +33,11 @@ For my metadata platform, I decided to use a combination of databases to leverag
 | **Relational Data Modeling** | Robust Relational Model         | Limited Relational Capabilities  | Limited Relational Capabilities  | Document-oriented (Relationships Limited) | Robust Relational Model         |
 | **Query Language**           | Standard SQL                    | NoSQL (CQL-like)                  | NoSQL (Proprietary API)         | NoSQL (Document Query Language)  | Standard SQL                        |
 | **High Availability**         | Requires Complex Configurations  | Built-in High Availability        | Built-in High Availability        | Requires Replica Sets for HA       | Built-in High Availability         |
-| **Operational Complexity**    | Moderate                         | High                               | Low to Moderate                  | Moderate                         | Moderate                            |
-| **Use Case Suitability for Metadata** | Strong for smaller datasets, scaling challenges | Less suitable for highly relational metadata, excellent for performance in writes | Less suitable for highly relational metadata | Suitable for flexible metadata, consistency trade-offs | **Excellent for scalable, consistent, relational metadata** |
+| **Use Case Suitability for Metadata** | Great for smaller datasets, scaling challenges | Less suitable for relational metadata, excellent for performance in writes | Less suitable for relational metadata, excellent perf | Suitable for flexible metadata, consistency trade-offs | **Excellent for scalable, consistent, relational metadata** |
 
 The selection of CockroachDB is primarily justified by its strengths of relational databases with the scalability and resilience demands of a modern metadata platform.  Its transactional guarantees and SQL interface simplify development and ensure data integrity, while its distributed nature provides the necessary scalability and high availability to accommodate growing metadata volumes and ensure continuous operation. 
+
+However we will need to dig deep into the query patterns and benchmarks for our system to make the right choice, for example we might prefer cassandra for its excellent write performances if we dont need complex query patterns. Similarily dynamo is very performant,scalable but it restricts us to AWS.
 
 *   **Elasticsearch (for Search & Discovery):**  To enable users to easily search and discover metadata assets, I'm integrating Elasticsearch. Elasticsearch's full-text search capabilities and speed are ideal for indexing metadata attributes and providing fast, flexible search functionalities.
 
